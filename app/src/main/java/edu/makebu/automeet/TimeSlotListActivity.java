@@ -12,11 +12,13 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 
 import edu.makebu.automeet.dummy.DummyContent;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,13 +36,23 @@ public class TimeSlotListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private DatePicker datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeslot_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        Calendar cal = Calendar.getInstance();
+
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        datePicker.updateDate(year, month, day);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 

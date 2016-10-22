@@ -59,7 +59,7 @@ public class DummyContent {
         public final String details;
 
         public DummyItem(String id, String content, String details) {
-            this.id = id;
+            this.id = id; // current hour
             this.content = content;
             this.details = details;
         }

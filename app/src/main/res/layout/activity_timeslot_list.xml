@@ -28,6 +28,11 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/timeslot_list"/>
+
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/datePicker"/>
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
