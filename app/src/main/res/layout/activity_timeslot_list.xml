@@ -21,6 +21,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -29,10 +31,6 @@
 
         <include layout="@layout/timeslot_list"/>
 
-        <DatePicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/datePicker"/>
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton

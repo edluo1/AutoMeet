@@ -1,5 +1,6 @@
 package edu.makebu.automeet;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,18 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-import edu.makebu.automeet.dummy.DummyContent;
-
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+
+import static android.widget.Toast.LENGTH_SHORT;
+
 
 /**
  * An activity representing a list of TimeSlots. This activity
@@ -36,7 +40,8 @@ public class TimeSlotListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
-    private DatePicker datePicker;
+    private DatePickerDialog.OnDateSetListener date;
+    private Calendar myCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +50,22 @@ public class TimeSlotListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeslot_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
-        Calendar cal = Calendar.getInstance();
+        myCalendar = Calendar.getInstance();
 
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+        date = new DatePickerDialog.OnDateSetListener() {
 
-        datePicker.updateDate(year, month, day);
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
@@ -60,8 +73,9 @@ public class TimeSlotListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                new DatePickerDialog(TimeSlotListActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -78,16 +92,25 @@ public class TimeSlotListActivity extends AppCompatActivity {
         }
     }
 
+    private void updateLabel() {
+
+        String myFormat = "MM/dd/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        Toast dateSet = Toast.makeText(this, sdf.format(myCalendar.getTime()), LENGTH_SHORT);
+        dateSet.show();
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(TimelineContent.ITEMS));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<TimelineHour> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public SimpleItemRecyclerViewAdapter(List<TimelineHour> items) {
             mValues = items;
         }
 
@@ -135,7 +158,7 @@ public class TimeSlotListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public TimelineHour mItem;
 
             public ViewHolder(View view) {
                 super(view);

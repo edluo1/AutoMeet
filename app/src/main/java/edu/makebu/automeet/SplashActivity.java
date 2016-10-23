@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the login activity. */
-                Intent mainIntent = new Intent(SplashActivity.this,LoginActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this,TimeSlotListActivity.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }
